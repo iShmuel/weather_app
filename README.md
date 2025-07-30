@@ -47,13 +47,14 @@
 
 ```
 weather-checker/
-│
-├── app.py              # קובץ ראשי של האפליקציה
+├──src/
+    ├── weather-checker/
+    └── main.py              # קובץ ראשי של האפליקציה
 ├── .env                # משתני סביבה (מפתח API)
 ├── .gitignore          # קבצים לא למעקב Git
 ├── README.md           # תיעוד הפרויקט
-├── pyproject.toml      # הגדרות Poetry
-└── requirements.txt    # ל־pip במידת הצורך
+└── pyproject.toml      # הגדרות Poetry
+
 ```
 
 ---
@@ -63,7 +64,7 @@ weather-checker/
 ### 1. שיבוט הפרויקט
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/weather-checker.git
+git clone https://github.com/iShmuel/weather_app.git
 cd weather-checker
 ```
 
