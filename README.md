@@ -1,107 +1,118 @@
-🌦️ Weather Checker Application
-A simple and user-friendly Streamlit web app that allows users to retrieve and view current weather conditions and a weekly forecast for any city, using real-time data from the OpenWeatherMap API.
+# 🌦️ Weather Checker Application
 
-🚀 Features
-🔎 Enter any city name to fetch weather details
+יישום אינטראקטיבי הבנוי ב־**Streamlit**, המאפשר למשתמשים לבדוק את מזג האוויר הנוכחי ותחזית שבועית לפי עיר, תוך שימוש בנתונים בזמן אמת מ־[OpenWeatherMap API](https://openweathermap.org/).
 
-🌡️ Displays temperature, pressure, humidity, and wind speed
+---
 
-📆 Weekly forecast with daily min/max temperature and description
+## 🚀 תכונות עיקריות
 
-📍 Uses geographic coordinates (lat/lon) for forecast retrieval
+- 🔎 קבלת נתוני מזג אוויר לפי שם עיר
+- 🌡️ הצגת טמפרטורה, לחץ, לחות ומהירות רוח
+- 📆 תחזית שבועית עם טמפ' מקס/מינימום ותיאור
+- 📍 שימוש בקואורדינטות (lat/lon) עבור תחזית מדויקת
+- 📊 ממשק רספונסיבי עם `st.columns()` להצגה נוחה
+- 🧠 טעינת משתני סביבה מ־`.env` באופן מאובטח
+- 🔐 אין שמירה של מפתחות API בקוד
+- 📦 מנוהל עם **Poetry**
 
-📊 Responsive layout using st.columns() for clean UI
+---
 
-🧠 Environment variables loaded securely via .env
+## 🖥️ הדגמת שימוש
 
-🔐 API keys are not hardcoded
+```bash
+ poetry run streamlit run app.py
+```
 
-📦 Packaged with Poetry for dependency management
+| פרמטר            | דוגמה                |
+|------------------|----------------------|
+| 🌡️ טמפרטורה     | `22.5 °C`            |
+| 💨 מהירות רוח    | `5.5 m/s`            |
+| 📅 יום תחזית     | `Monday, July 29`    |
+| 🧾 תיאור         | `Scattered Clouds`   |
 
-🖥️ Streamlit UI Demo
-bash
-Copy
-Edit
-streamlit run app.py
-Feature	Example
-🌡️ Temperature	22.5 °C
-💨 Wind Speed	5.5 m/s
-📅 Forecast Day	Monday, July 29
-🧾 Description	Scattered Clouds
+---
 
-🛠️ Tech Stack
-Python 3.10+
+## 🛠️ טכנולוגיות בשימוש
 
-Streamlit — for interactive UI
+- **Python 3.10+**
+- [Streamlit](https://streamlit.io/)
+- [OpenWeatherMap API](https://openweathermap.org/api)
+- `requests`
+- `python-dotenv`
+- `datetime`
 
-OpenWeatherMap API
+---
 
-requests — for API handling
+## 📁 מבנה הפרויקט
 
-python-dotenv — to manage secrets securely
-
-datetime — for date parsing and formatting
-
-📁 Project Structure
-bash
-Copy
-Edit
+```
 weather-checker/
 │
-├── app.py                 # Main Streamlit app
-├── .env                  # Holds your WEATHER_API key
-├── .gitignore            # Standard Python ignore rules
-├── README.md             # Project overview and usage
-├── pyproject.toml        # Poetry dependencies
-└── requirements.txt      # Exported for deployment if needed
-🧪 Setup Instructions
-1. Clone the repository
-bash
-Copy
-Edit
+├── app.py              # קובץ ראשי של האפליקציה
+├── .env                # משתני סביבה (מפתח API)
+├── .gitignore          # קבצים לא למעקב Git
+├── README.md           # תיעוד הפרויקט
+├── pyproject.toml      # הגדרות Poetry
+└── requirements.txt    # ל־pip במידת הצורך
+```
+
+---
+
+## 🧪 הוראות התקנה והרצה
+
+### 1. שיבוט הפרויקט
+
+```bash
 git clone https://github.com/YOUR_USERNAME/weather-checker.git
 cd weather-checker
-2. Set up virtual environment (with Poetry)
-bash
-Copy
-Edit
+```
+
+### 2. התקנת הסביבה עם Poetry
+
+```bash
 poetry install
 poetry shell
-3. Add your .env file
-Create a .env file with your OpenWeatherMap API key:
+```
 
-env
-Copy
-Edit
+### 3. יצירת קובץ `.env`
+
+```env
 WEATHER_API=your_api_key_here
-4. Run the app
-bash
-Copy
-Edit
+```
+
+### 4. הרצת האפליקציה
+
+```bash
 streamlit run app.py
-🔑 How to Get an OpenWeatherMap API Key
-Visit https://openweathermap.org/api
+```
 
-Sign up and log in
+---
 
-Create a new API key
+## 🔑 קבלת מפתח OpenWeatherMap
 
-Paste it into your .env file like shown above
+1. עבור ל־[https://openweathermap.org/api](https://openweathermap.org/api)
+2. בצע הרשמה / התחברות
+3. צור מפתח API חדש
+4. הדבק אותו בקובץ `.env` שלך
 
-📚 Stretch Goals (Optional Enhancements)
-✅ Stretch A: Show Current Local Time
-Display local time in both the user's timezone and the target city using pytz.
+---
 
-✅ Stretch B: Persistent Settings with JSON
-Save user preferences (default city, temperature units, etc.) in a local settings.json file.
+## 📚 מטרות מתקדמות (Stretch Goals)
 
-✅ Stretch C: Add Maps or Icons
-Display an interactive map (using folium) or weather icons (using OpenWeatherMap's icon URLs).
+### ✅ הצגת זמן מקומי בעיר שנבחרה
+שימוש בספרייה `pytz` להצגת השעה המקומית של העיר.
 
-🧾 Example Weather API Response (Trimmed)
-json
-Copy
-Edit
+### ✅ הגדרות נשמרות ב־JSON
+שמירת העדפות משתמש כמו עיר ברירת מחדל, יחידות טמפרטורה וכו'.
+
+### ✅ מפות ואייקונים
+הצגת מפות עם `folium` ואייקוני מזג אוויר מ־OpenWeatherMap.
+
+---
+
+## 🧾 דוגמת תגובה מה־API (מקוצרת)
+
+```json
 {
   "coord": { "lon": -0.13, "lat": 51.51 },
   "weather": [{ "description": "light rain", "icon": "10d" }],
@@ -110,5 +121,16 @@ Edit
   "dt": 1628167200,
   "name": "London"
 }
-💡 Contribution Guidelines
-Pull requests are welcome! If you have suggestions for improvements—UI enhancements, better forecast layout, caching, or other APIs—feel free to open a PR.
+```
+
+---
+
+## 💡 הנחיות לתרומה
+
+Pull Requests יתקבלו בברכה! נשמח לשיפורים ב־UI, תחזית טובה יותר, קאשינג או שילוב APIs נוספים.
+
+---
+
+## 📜 רישיון
+
+הפרויקט פתוח וזמין תחת רישיון MIT.
