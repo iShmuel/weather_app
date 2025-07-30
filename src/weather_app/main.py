@@ -1,10 +1,11 @@
 import os
 import streamlit as st
 import requests
-import openai
 from dotenv import load_dotenv
+from datetime import datetime
 
-load_dotenv()  # טוען את כל המשתנים מקובץ .env
+
+load_dotenv()  # load ver from  .env
 
 
 def get_weather_data(city, weather_api_key):
@@ -13,23 +14,52 @@ def get_weather_data(city, weather_api_key):
     return response.json()
 
 
-def generate_weather_description(data, openai_api_key):
-    openai.api_key = openai_api_key
+def get_weekly_forecast(weather_api_key, lat, lon):
+    url = f"https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={weather_api_key}&units=metric"
+    response = requests.get(url)
+    return response.json()
 
+
+def display_weekly_forecast(data):
     try:
-        # Convert temperature from Kelvin to Celsius
-        temperature = data['main']['temp']
-        description = data['weather'][0]['description']
-        prompt = f"The current weather in your city is {description} with temperature of {temperature:.1f}*c. Explain this in a simple way for a general audience. "
+        st.write("========================================================================================")
+        st.write("### Weekly Weather Forecast")
+        display_dates = set()  # To keep track of dates for which forecast has been displayed
 
-        response = openai.Completion.create(
-            engine="gpt-3.5-turbo-instruct",
-            prompt=prompt,
-            max_tokens=60
-        )
-        return response.choices[0].text.strip()
+        # c1, c2, c3, c4 = st.columns(4)
+        c1, c2, c3, c4 = st.columns([4, 4, 2, 2])
+
+        with c1:
+            st.metric("", "Day")
+        with c2:
+            st.metric("", "Description")
+        with c3:
+            st.metric("", "Min_temp")
+        with c4:
+            st.metric("", "Max_temp")
+
+        for day in data['list']:
+
+            date = datetime.fromtimestamp(day['dt']).strftime('%A, %B, %d')
+            # Check if the date has already been displayed
+            if date not in display_dates:
+                display_dates.add(date)
+
+                min_temp = day['main']['temp_min']
+                max_temp = day['main']['temp_max']
+                description = day['weather'][0]['description'].capitalize()
+
+                with c1:
+                    st.metric(label="Date", value=date)
+                with c2:
+                    st.metric(label="Description", value=description.capitalize())
+                with c3:
+                    st.metric(label="Min Temp", value=f"{min_temp:.1f}°C")
+                with c4:
+                    st.metric(label="Max Temp", value=f"{max_temp:.1f}°C")
+
     except Exception as e:
-        return str(e)
+        st.error("Error in Displaying weekly forecast: " + str(e))
 
 
 def main():
@@ -39,10 +69,6 @@ def main():
 
     # API key
     weather_api_key = os.getenv("WEATHER_API")
-    openai_api_key = os.getenv("OPENAI_API")
-
-    # url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={weather_api_key}&units=metric'
-    # response= requests.get(url)
 
     # Button to fetch and display weather data
     submit = st.sidebar.button("Get Weather")
@@ -52,6 +78,35 @@ def main():
         with st.spinner("Fetching weather data..."):
             weather_data = get_weather_data(city, weather_api_key)
             print(weather_data)
+
+            # Check if the city is found and display weather data
+            if weather_data.get("cod") != 404:
+                col1, col2, col3, col4 = st.columns(4)
+                with col1:
+                    st.metric("Temperature ", f"{weather_data['main']['temp']:.2f} *C")
+                with col2:
+                    st.metric("Pressure ", f"{weather_data['main']['pressure']} hPa")
+                with col3:
+                    st.metric("Humidity ", f"{weather_data['main']['humidity']}%")
+                with col4:
+                    st.metric("Wind Speed ", f"{weather_data['wind']['speed']}m/s")
+
+                lat = weather_data['coord']['lat']
+                lon = weather_data['coord']['lon']
+
+                # Call function to get weekly forecast
+                forecast_data = get_weekly_forecast(weather_api_key, lat, lon)
+
+                print(forecast_data)
+                if forecast_data.get("cod") != "404":
+                    display_weekly_forecast(forecast_data)
+
+                else:
+                    st.error("Error fetching weekly forecast data")
+
+            else:
+                # Display an error message if the city is not found
+                st.error("City not found or an error occurred!")
 
 
 if __name__ == "__main__":
