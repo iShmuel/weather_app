@@ -11,7 +11,9 @@ dependencies = [
     "streamlit (>=1.47.1,<2.0.0)",
     "requests (>=2.32.4,<3.0.0)",
     "python-dotenv (>=1.1.1,<2.0.0)",
-    "openai (==0.28)"
+    "openai (==0.28)",
+    "folium (>=0.20.0,<0.21.0)",
+    "streamlit-folium (>=0.25.0,<0.26.0)"
 ]
 
 [tool.poetry]

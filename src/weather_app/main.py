@@ -3,7 +3,8 @@ import streamlit as st
 import requests
 from dotenv import load_dotenv
 from datetime import datetime
-
+import folium
+from streamlit_folium import st_folium
 
 load_dotenv()  # load ver from  .env
 
@@ -93,7 +94,7 @@ def main():
 
                 lat = weather_data['coord']['lat']
                 lon = weather_data['coord']['lon']
-
+                icon_code = weather_data['weather'][0]['icon']
                 # Call function to get weekly forecast
                 forecast_data = get_weekly_forecast(weather_api_key, lat, lon)
 
