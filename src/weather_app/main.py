@@ -69,7 +69,8 @@ def main():
     city = st.sidebar.text_input("Enter city name")
 
     # API key
-    weather_api_key = os.getenv("WEATHER_API")
+    # weather_api_key = os.getenv("WEATHER_API")
+    weather_api_key = st.secrets["weather"]["api_key"]
 
     # Button to fetch and display weather data
     submit = st.sidebar.button("Get Weather")
