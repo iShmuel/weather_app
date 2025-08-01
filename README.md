@@ -120,3 +120,4 @@ poetry run streamlit run src/weather_app/main.py
 ---
 
 
+לשישמוש ביישום : https://weatherapp-o6fsjkie9m3sf8qbyz9hox.streamlit.app/
